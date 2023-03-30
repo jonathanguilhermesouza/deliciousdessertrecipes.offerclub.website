@@ -8,6 +8,48 @@
 <link rel="stylesheet" href="./files/style.css">
 <title>Dessert Recipes</title>
 
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+    // Obter todos os parâmetros da URL
+    var queryParams = window.location.search.substring(1).split("&");
+    var params = {};
+    for (var i = 0; i < queryParams.length; i++) {
+      var pair = queryParams[i].split("=");
+      params[pair[0]] = decodeURIComponent(pair[1]);
+    }
+    
+    // Localizar todos os botões e links de ação na página
+    var buttonsAndLinks = document.querySelectorAll('button, a');
+  
+    // Inserir os parâmetros da URL em cada botão ou link de ação encontrado
+    for (var i = 0; i < buttonsAndLinks.length; i++) {
+      var buttonOrLink = buttonsAndLinks[i];
+      var href = buttonOrLink.getAttribute('href');
+      var buttonData = buttonOrLink.dataset;
+      if (href) {
+        // Adicionar os parâmetros da URL à URL atual do link
+        var newHref = href;
+        if (newHref.indexOf('?') > -1) {
+          newHref += '&';
+        } else {
+          newHref += '?';
+        }
+        for (var key in params) {
+          newHref += key + '=' + encodeURIComponent(params[key]) + '&';
+        }
+        newHref = newHref.slice(0, -1); // remover o último "&"
+        buttonOrLink.setAttribute('href', newHref);
+      }
+      if (buttonData) {
+        // Adicionar os parâmetros da URL como data-* attributes do botão
+        for (var key in params) {
+          buttonOrLink.dataset[key] = params[key];
+        }
+      }
+    }
+  });
+  
+  </script>
 <script async="" src="./files/fbevents.js.download"></script><script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
